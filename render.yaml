@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: student-records-api
+    runtime: python
+    plan: 0.5c-512mb
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    disk:
+      name: student-records-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: STUDENT_DB_PATH
+        value: /var/data/students.db
+      - key: AI_ENABLED
+        value: "false"
